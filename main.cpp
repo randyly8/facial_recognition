@@ -4,21 +4,28 @@
 #include <opencv2/objdetect.hpp>
 #include <iostream>
 
+void censor()
+{
+
+}
+
+
 // Video capture with face detection
 int main()
 {
-    cv::Mat image;
+    cv::Mat image, gray;
     cv::VideoCapture cap(0);
     cap.set(cv::CAP_PROP_FRAME_WIDTH , 640);
     cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
     while (true)
     {
         cap.read(image);
+        cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
 
         cv::CascadeClassifier faceCascade;
         faceCascade.load("resources/haarcascade_frontalface_default.xml");
         std::vector<cv::Rect> faces;
-        faceCascade.detectMultiScale(image, faces, 1.1, 3, 0, cv::Size(50, 50));
+        faceCascade.detectMultiScale(gray, faces, 1.0485258, 6, 0, cv::Size(100, 100));
 
         for (int i = 0; i < faces.size(); i++)
         {
