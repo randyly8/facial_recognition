@@ -4,11 +4,6 @@
 #include <opencv2/objdetect.hpp>
 #include <iostream>
 
-void censor()
-{
-
-}
-
 
 // Video capture with face detection
 int main()
@@ -29,7 +24,9 @@ int main()
 
         for (int i = 0; i < faces.size(); i++)
         {
-            cv::rectangle(image, faces[i].tl(), faces[i].br(), cv::Scalar(0, 255, 0), 3);
+            //cv::rectangle(image, faces[i].tl(), faces[i].br(), cv::Scalar(0, 255, 0), 3);
+            cv::Rect roi = cv::Rect(faces[i].tl(), faces[i].br());
+            cv::GaussianBlur(image(roi), image(roi), cv::Size(51, 51), 0);
         }
 
         cv::imshow("Webcam", image);
