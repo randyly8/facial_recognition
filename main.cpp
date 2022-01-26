@@ -4,9 +4,14 @@
 #include <opencv2/objdetect.hpp>
 #include <iostream>
 
+// Filters
+void blur(cv::Mat& image, cv::Rect& roi)
+{
+    cv::GaussianBlur(image(roi), image(roi), cv::Size(51, 51), 0);
+}
 
-// Video capture with face detection
-int main()
+// Handler
+void filter_handler(int& option)
 {
     cv::Mat image, gray;
     cv::VideoCapture cap(0);
@@ -26,11 +31,34 @@ int main()
         {
             //cv::rectangle(image, faces[i].tl(), faces[i].br(), cv::Scalar(0, 255, 0), 3);
             cv::Rect roi = cv::Rect(faces[i].tl(), faces[i].br());
-            cv::GaussianBlur(image(roi), image(roi), cv::Size(51, 51), 0);
+            switch(option)
+            {
+                case 1:
+                blur(image, roi);
+                break;
+            }
         }
 
         cv::imshow("Webcam", image);
         cv::waitKey(1);
     }
+}
+
+int main()
+{
+    int option;
+    std::cout << "Blur: 1" << "\n";
+    std::cout << "Exit: 0" << "\n";
+    std::cout << "Please choose a filter: ";
+    std::cin >> option;
+    switch (option)
+    {
+        case 0:
+            break;
+        case 1:
+            filter_handler(option);
+            break;
+    }
+    std::cout << "Program ended." << std::endl;;
     return 0;
 }
